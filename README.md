@@ -15,6 +15,13 @@ Install the requirements
 pip install -r requirements.txt
 ```
 
+## Openapi-generator 
+
+Install openapi-generator-cli
+
+```
+brew install openapi-generator-cli
+```
 
 Download python templates for openapi-generator
 ```
