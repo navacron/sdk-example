@@ -93,6 +93,12 @@ class Telemetry:
     logger: logging.Logger
     tracer: Optional[trace.Tracer]
     meter: Optional[metrics.Meter]
+
+def init_newrelic_observability(config: TelemetryConfig) -> Telemetry:
+    ...
+
+def init_console_observability(config: TelemetryConfig) -> Telemetry:
+    ... 
 ```
 
 ## Run Console Observability
