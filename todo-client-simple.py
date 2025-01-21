@@ -9,17 +9,6 @@ logging.basicConfig(level=logging.INFO)
 config = Configuration(host="http://localhost:5001")
 api_client = ApiClient(configuration=config)
 
-# Define pre and post request hooks
-def pre_request_hook(method, path, body):
-    logging.info(f"About to make {method} request to {path}")
-
-def post_request_hook(method, path, response):
-    logging.info(f"Received response from {method} {path}: {response.status}")
-
-# Set the hooks
-api_client.pre_request_hook = pre_request_hook
-api_client.post_request_hook = post_request_hook
-
 # Create API instance
 api = DefaultApi(api_client)
 

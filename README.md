@@ -30,12 +30,12 @@ openapi-generator-cli author template -g python -o ./python-templates
 
 Generate the sdk
 ```
-openapi-generator-cli generate -i todo-open-api.yaml -g python -o ./todosdk-python --additional-properties=packageName=todosdk
+openapi-generator-cli generate -i todo-open-api.yaml -g python -o ./todo-sdk --additional-properties=packageName=todosdk
 ```
 
 Update requirements.txt and install generated sdk. Do not forget to pip install everytime the sdk is updated.
 ```
-Add ./todosdk-python to requirements.txt
+Add ./todosdk to requirements.txt
 pip install -r requirements.txt
 ```
 ## Run the Service and Client
@@ -45,7 +45,22 @@ Run the api service app compliant to the openapi spec
 python todo-service-flask.py
 ```
 
-Run the client that that demonstrate the usage of the generated sdk
+Run the client that that demonstrate the usage of generated sdk
 ```
 python todo-client-simple.py
+```
+
+## Add Observability Hooks
+
+
+Modify the api_client.mustache file to add pre and post request hooks. Note that the api_client.mustache file is located in the python-templates-modified folder and all other files are deleted for simplicity. The python-templates folder is the original template folder.
+
+Re-generate the sdk
+```
+openapi-generator-cli generate -i todo-open-api.yaml -g python -o ./todo-sdk  -t ./python-templates-modified \--additional-properties=packageName=todosdk
+```
+
+Run the client that that demonstrate the usage of generated sdk with observability
+```
+python todo-client-observability-newrelic.py
 ```
