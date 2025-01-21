@@ -28,7 +28,7 @@ Download python templates for openapi-generator
 openapi-generator-cli author template -g python -o ./python-templates
 ```
 
-Generate the sdk
+Generate the sdk, without using the templates i.e. default templates
 ```
 openapi-generator-cli generate -i todo-open-api.yaml -g python -o ./todo-sdk --additional-properties=packageName=todosdk
 ```
@@ -60,7 +60,23 @@ Re-generate the sdk
 openapi-generator-cli generate -i todo-open-api.yaml -g python -o ./todo-sdk  -t ./python-templates-modified \--additional-properties=packageName=todosdk
 ```
 
-Run the client that that demonstrate the usage of generated sdk with observability
+## Run Console Observability
+
+Run the client that that demonstrate the usage of generated sdk with observability that prints to console. This demonstrates trace, span and metrics and logging, directly to the console.
+
+## Run NewRelic Observability
+
+Register for a free account at https://newrelic.com/signup
+
+Get API key for NewRelic. Get the Ingest KEY type to be able to send data to NewRelic, using opentelemetry.
+
 ```
 python todo-client-observability-newrelic.py
+```
+
+
+
+Run the client that that demonstrate the usage of generated sdk with observability
+```
+python todo-client-observability-console.py
 ```

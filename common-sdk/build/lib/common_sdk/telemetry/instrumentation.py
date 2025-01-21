@@ -20,13 +20,18 @@ from opentelemetry._logs import (
 )
 import time
 
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import ConsoleSpanExporter, BatchSpanProcessor
+from opentelemetry.sdk.metrics import MeterProvider
+from opentelemetry.sdk.metrics.export import ConsoleMetricExporter, PeriodicExportingMetricReader
 
 
 
 @dataclass
 class TelemetryConfig:
     service_name: str
-    newrelic_license_key: str
+    newrelic_license_key: Optional[str] = None
     log_level: int = logging.INFO
     otlp_endpoint: str = "https://otlp.nr-data.net:4318"
     enable_traces: bool = True
@@ -132,5 +137,40 @@ def init_newrelic_observability(config: TelemetryConfig) -> Telemetry:
     logger.addHandler(NewRelicHandler())
 
     return Telemetry(logger=logger, tracer=trace.get_tracer(__name__), meter=metrics.get_meter(__name__))
+
+def init_console_observability(config: TelemetryConfig) -> Telemetry:
+    """Initialize console-based observability that prints logs, metrics, and traces to stdout"""
+    
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+
+    # Configure tracing
+    tracer_provider = TracerProvider()
+    tracer_provider.add_span_processor(
+        BatchSpanProcessor(ConsoleSpanExporter())
+    )
+    trace.set_tracer_provider(tracer_provider)
+
+    # Configure metrics
+    metric_reader = PeriodicExportingMetricReader(
+        ConsoleMetricExporter(),
+        export_interval_millis=5000
+    )
+    meter_provider = MeterProvider(metric_readers=[metric_reader])
+
+    tracer = trace.get_tracer(
+            config.service_name,
+            tracer_provider=tracer_provider
+        )
+        
+        # Initialize metrics
+    meter = metrics.get_meter(
+            config.service_name,
+            meter_provider=meter_provider
+        )
+    logger = logging.getLogger(config.service_name)
+    return Telemetry(logger=logger, tracer=tracer, meter=meter)
 
 
