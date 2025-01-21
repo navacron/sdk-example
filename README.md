@@ -71,6 +71,28 @@ Re-generate the sdk
 openapi-generator-cli generate -i todo-open-api.yaml -g python -o ./todo-sdk  -t ./python-templates-modified \--additional-properties=packageName=todosdk
 ```
 
+## Common SDK
+
+The common_sdk folder contains libraries to instantiate and configure the telemetry and logging. It has a telemetry.py file that contains the init_console_observability and init_newrelic_observability functions. Each method takes TelemetryConfig as an argument and returns a Telemetry object, which contains a logger, tracer and meter.
+
+```
+@dataclass
+class TelemetryConfig:
+    service_name: str
+    newrelic_license_key: Optional[str] = None
+    log_level: int = logging.INFO
+    otlp_endpoint: str = "https://otlp.nr-data.net:4318"
+    enable_traces: bool = True
+    enable_metrics: bool = True
+     
+
+@dataclass
+class Telemetry:
+    logger: logging.Logger
+    tracer: Optional[trace.Tracer]
+    meter: Optional[metrics.Meter]
+```
+
 ## Run Console Observability
 
 Run the client that that demonstrate the usage of generated sdk with observability that prints to console. This demonstrates trace, span and metrics and logging, directly to the console.
