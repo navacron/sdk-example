@@ -64,19 +64,28 @@ openapi-generator-cli generate -i todo-open-api.yaml -g python -o ./todo-sdk  -t
 
 Run the client that that demonstrate the usage of generated sdk with observability that prints to console. This demonstrates trace, span and metrics and logging, directly to the console.
 
+```
+python todo-client-observability-console.py
+```
+
 ## Run NewRelic Observability
 
 Register for a free account at https://newrelic.com/signup
 
 Get API key for NewRelic. Get the Ingest KEY type to be able to send data to NewRelic, using opentelemetry.
 
+In your unix environment, set the following environment variables
+```
+export NEW_RELIC_LICENSE_KEY=YOUR_NEW_RELIC_INGEST_KEY
+```
+
+Run the client that that demonstrate the usage of generated sdk with observability
 ```
 python todo-client-observability-newrelic.py
 ```
 
+Go to NewRelic and see the traces and metrics and logs
 
 
-Run the client that that demonstrate the usage of generated sdk with observability
-```
-python todo-client-observability-console.py
-```
+
+
