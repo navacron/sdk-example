@@ -1,5 +1,7 @@
 # SDK-Example
 
+This is an example of how to generate an sdk using openapi-generator and how to add observability hooks to the sdk. The observability hooks are added to the api_client.mustache file. This example demonstrates how to add observability hooks to the sdk and how to run the sdk with console and newrelic observability.
+
 ## Create a virtual environment
 ```
 python -m venv venv
