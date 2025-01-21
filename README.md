@@ -55,6 +55,17 @@ python todo-client-simple.py
 
 Modify the api_client.mustache file to add pre and post request hooks. Note that the api_client.mustache file is located in the python-templates-modified folder and all other files are deleted for simplicity. The python-templates folder is the original template folder.
 
+For example we have added the following code to the api_client.mustache file in the call_api method. 
+```
+    {{#asyncio}}async {{/asyncio}}def call_api(
+        ..
+        ..
+            # Call pre request hook if defined
+            if hasattr(self, 'pre_request_hook'):
+                self.pre_request_hook(method=method, path=url, body=body)
+```
+
+
 Re-generate the sdk
 ```
 openapi-generator-cli generate -i todo-open-api.yaml -g python -o ./todo-sdk  -t ./python-templates-modified \--additional-properties=packageName=todosdk
